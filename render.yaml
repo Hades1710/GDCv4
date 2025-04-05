@@ -3,12 +3,18 @@ services:
     name: bloodbank-management
     runtime: python
     buildCommand: "./build.sh"
-    startCommand: "cd BBM && gunicorn bloodbankmanagement.wsgi:application"
+    startCommand: >-
+      cd BBM && 
+      if [ -f /tmp/db/db.sqlite3 ]; then 
+        ln -sf /tmp/db/db.sqlite3 db.sqlite3; 
+      fi && 
+      python manage.py migrate && 
+      gunicorn bloodbankmanagement.wsgi:application
     envVars:
       - key: DATABASE_URL
         value: ''
       - key: SECRET_KEY
-        generateValue: true
+        value: '+zy!9k=9pql5gz9bkqjore)k6r!%w0atk(@(!(!zvp5e(t2i8n'
       - key: PYTHON_VERSION
         value: 3.10.6
       - key: WEB_CONCURRENCY
