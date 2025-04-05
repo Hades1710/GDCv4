@@ -5,15 +5,19 @@ set -o errexit
 # Install dependencies
 pip install -r BBM/requirements.txt
 
-# Create a symbolic link to make the module structure work
-mkdir -p /opt/render/project/src/bloodbankmanagement
-touch /opt/render/project/src/bloodbankmanagement/__init__.py
-ln -sf /opt/render/project/src/BBM/bloodbankmanagement/settings.py /opt/render/project/src/bloodbankmanagement/
-ln -sf /opt/render/project/src/BBM/bloodbankmanagement/wsgi.py /opt/render/project/src/bloodbankmanagement/
-ln -sf /opt/render/project/src/BBM/bloodbankmanagement/urls.py /opt/render/project/src/bloodbankmanagement/
+# Ensure our BBM module can be imported
+touch BBM/__init__.py
+
+# Make sure the database directory exists
+mkdir -p /tmp/db
 
 # Copy database if needed
 if [ -f BBM/db.sqlite3 ]; then
-    mkdir -p /tmp/db
     cp BBM/db.sqlite3 /tmp/db/db.sqlite3
 fi
+
+# Create a simple test to verify our approach
+echo "Testing Django settings import..."
+cd BBM
+python -c "import sys; print(sys.path); import os; print(os.getcwd()); from bloodbankmanagement import settings; print('Settings import successful!')"
+echo "Import test completed."

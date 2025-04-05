@@ -1,1 +1,1 @@
-web: cd BBM && PYTHONPATH=$PYTHONPATH:$(pwd) gunicorn --pythonpath . bloodbankmanagement.wsgi:application --log-file -
+web: cd BBM && gunicorn --pythonpath . wsgi:application --log-file -
