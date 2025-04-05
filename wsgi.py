@@ -1,19 +1,18 @@
 """
 WSGI config for bloodbankmanagement project.
 
-This module contains the WSGI application used by Django's development server
-and any production WSGI deployments.
+This file deliberately mimics the location and structure of the original WSGI file
+to help Render find it during deployment.
 """
 
 import os
 import sys
 
-# Add the BBM directory to the Python path
-base_dir = os.path.dirname(os.path.abspath(__file__))
-bbm_dir = os.path.join(base_dir, 'BBM')
-sys.path.append(bbm_dir)
+# Add system paths to ensure modules can be found
+sys.path.append('/opt/render/project/src')
+sys.path.append('/opt/render/project/src/BBM')
 
-# Define the WSGI application
+# Define the WSGI application using the absolute settings module path
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'bloodbankmanagement.settings')
 
 from django.core.wsgi import get_wsgi_application

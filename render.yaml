@@ -8,8 +8,9 @@ services:
       if [ -f /tmp/db/db.sqlite3 ]; then 
         ln -sf /tmp/db/db.sqlite3 db.sqlite3; 
       fi && 
-      PYTHONPATH=$PYTHONPATH:$(pwd) python manage.py migrate && 
-      PYTHONPATH=$PYTHONPATH:$(pwd) gunicorn --chdir . bloodbankmanagement.wsgi:application
+      PYTHONPATH=/opt/render/project/src python manage.py collectstatic --no-input && 
+      PYTHONPATH=/opt/render/project/src python manage.py migrate && 
+      PYTHONPATH=/opt/render/project/src gunicorn bloodbankmanagement.wsgi:application
     envVars:
       - key: DATABASE_URL
         value: ''

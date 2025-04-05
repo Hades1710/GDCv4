@@ -5,16 +5,15 @@ set -o errexit
 # Install dependencies
 pip install -r BBM/requirements.txt
 
-# Change to BBM directory and set Python path
-cd BBM
-export PYTHONPATH=$PYTHONPATH:$(pwd)
+# Create a symbolic link to make the module structure work
+mkdir -p /opt/render/project/src/bloodbankmanagement
+touch /opt/render/project/src/bloodbankmanagement/__init__.py
+ln -sf /opt/render/project/src/BBM/bloodbankmanagement/settings.py /opt/render/project/src/bloodbankmanagement/
+ln -sf /opt/render/project/src/BBM/bloodbankmanagement/wsgi.py /opt/render/project/src/bloodbankmanagement/
+ln -sf /opt/render/project/src/BBM/bloodbankmanagement/urls.py /opt/render/project/src/bloodbankmanagement/
 
-# Run collectstatic
-python manage.py collectstatic --no-input
-
-# Copy the SQLite database to the writable tmp directory if it exists
-if [ -f db.sqlite3 ]; then
+# Copy database if needed
+if [ -f BBM/db.sqlite3 ]; then
     mkdir -p /tmp/db
-    cp db.sqlite3 /tmp/db/db.sqlite3
-    # We'll set up symlink in start command
+    cp BBM/db.sqlite3 /tmp/db/db.sqlite3
 fi
