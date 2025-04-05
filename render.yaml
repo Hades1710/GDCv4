@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: bloodbank-management
+    runtime: python
+    buildCommand: "./build.sh"
+    startCommand: "cd BBM && gunicorn bloodbankmanagement.wsgi:application"
+    envVars:
+      - key: DATABASE_URL
+        value: ''
+      - key: SECRET_KEY
+        generateValue: true
+      - key: PYTHON_VERSION
+        value: 3.10.6
+      - key: WEB_CONCURRENCY
+        value: 4
